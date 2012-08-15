@@ -1,0 +1,10 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    safe_shell (1.0.2)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  safe_shell
