@@ -1,13 +1,34 @@
-require 'rubygems'
-require 'safe_shell'
+require File.expand_path('../constants.rb', __FILE__)
+
+include Constants
 
 raise "Missing backup name (ex. ./backup.rb my_name)" unless ARGV[0]
+d = ARGV[0]
 
-SafeShell.execute("dropdb ncs_navigator_core_paul")
-SafeShell.execute("dropdb psc_paul")
+command "Drop Cases Database" do
+	%x{dropdb "ncs_navigator_core_paul"}
+end
 
-SafeShell.execute("createdb ncs_navigator_core_paul")
-SafeShell.execute("createdb psc_paul")
+command "Drop PSC Database" do
+	%x{dropdb "psc_paul"}
+end
 
-SafeShell.execute("psql ncs_navigator_core_paul < #{ARGV[0]}/ncs_navigator_core_paul.dmp")
-SafeShell.execute("psql psc_paul < #{ARGV[0]}/psc_paul.dmp")
+command "Create Cases Database" do
+	%x{createdb "ncs_navigator_core_paul"}
+end
+
+command "Create PSC Database" do
+	%x{createdb "psc_paul"}
+end
+
+command "Restore Cases" do
+	%x{psql "ncs_navigator_core_paul" < "#{d}/ncs_navigator_core_paul.dmp"}
+end
+
+command "Restore PSC" do
+	%x{psql "psc_paul" < "#{d}/psc_paul.dmp"}
+end
+
+command "Restore Field" do
+	%x{cp "#{d}/main.sqlite" "#{Constants::IOS}"}
+end

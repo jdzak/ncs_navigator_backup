@@ -5,5 +5,6 @@ module Constants
     yield
     r = ($? == 0) ? "Success" : "Failed"
     puts "#{r}: #{desc}"
+    ($? == 0)
   end
 end
