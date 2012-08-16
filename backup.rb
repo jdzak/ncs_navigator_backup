@@ -1,9 +1,22 @@
-require 'rubygems'
-require 'safe_shell'
+require File.expand_path('../constants.rb', __FILE__)
+
+include Constants
 
 raise "Missing backup name (ex. ./backup.rb my_name)" unless ARGV[0]
+d = ARGV[0]
 
-SafeShell.execute("mkdir", ARGV[0])
-SafeShell.execute("pg_dump", "ncs_navigator_core_paul", :stdout => "#{ARGV[0]}/ncs_navigator_core_paul.dmp")
-SafeShell.execute("pg_dump", "psc_paul", :stdout => "#{ARGV[0]}/psc_paul.dmp")
-SafeShell.execute("cp", "psc_paul" "#{ARGV[0]}/main.sqlite")
+command "Create directory #{d}" do
+	%x{mkdir "#{d}"}
+end
+
+command "Backup Cases" do
+	%x{pg_dump "ncs_navigator_core_paul" > "#{d}/ncs_navigator_core_paul.dmp"}
+end
+
+command "Backup PSC" do
+	%x{pg_dump "psc_paul" > "#{d}/psc_paul.dmp"}
+end
+
+command "Backup Field" do
+	%x{cp "#{Constants::IOS}" "#{d}/main.sqlite"}
+end
