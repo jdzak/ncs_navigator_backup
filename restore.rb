@@ -3,7 +3,7 @@ require File.expand_path('../constants.rb', __FILE__)
 include Constants
 
 raise "Missing backup name (ex. ./backup.rb my_name)" unless ARGV[0]
-d = ARGV[0]
+d = File.join('backup', ARGV[0])
 
 command "Drop Cases Database" do
 	%x{dropdb "ncs_navigator_core_paul"}
